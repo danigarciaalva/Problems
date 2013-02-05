@@ -1,7 +1,6 @@
 /* Facebook Hacker Cup 2012 - Qualification Round
  * Problema: Alphabet Soup
  * Categoria: Ad hoc
- * 
  * Israel Leiva - 20-01-2012
  */
 #include <cstdio>

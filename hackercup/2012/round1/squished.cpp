@@ -1,7 +1,6 @@
 /* Facebook Hacker Cup 2012 - First Round
  * Problema: Squished Status
  * Categoria: Backtracking 
- * 
  * Israel Leiva - 28-01-2012
  */
 #include <iostream>

@@ -1,7 +1,6 @@
 /* Facebook Hacker Cup 2012 - Qualification Round
  * Problema: Billboards
  * Categoria: Ad hoc
- * 
  * Israel Leiva - 23-01-2012
  */
 #include <iostream>
