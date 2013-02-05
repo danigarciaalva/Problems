@@ -1,7 +1,6 @@
 /* Caribbean Online Judge
  * Problem: 1805 - Harder A+B
  * Category: Ad hoc
- *
  * Israel Leiva - 06-10-2012
  */
 #include <stdio.h>

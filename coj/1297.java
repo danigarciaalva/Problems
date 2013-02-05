@@ -1,7 +1,6 @@
 /* Caribbean Online Judge
  * Problema: 1297 - Divisibility by 495
  * Category: Algebra and Arithmetic
- *
  * Israel Leiva - 06-10-2012
  */
 import java.math.BigInteger;
