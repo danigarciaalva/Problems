@@ -3,10 +3,10 @@ use List::MoreUtils "uniq";
 
 sub log2 { return log(shift)/log(2) }
 
-($lista, $fuente) = (shift, shift);
+($lista, $fuente)	= (shift, shift);
 $codigo			= slurp $fuente;
-@lista				= split '\n', slurp $lista;
-@lista				= sort { $b <=> $a } @lista;
+@lista			= split '\n', slurp $lista;
+@lista			= sort { $b <=> $a } @lista;
 
 $codigo =~ s/\\\'//g;
 $codigo =~ s/\\\"//g;
@@ -16,12 +16,7 @@ foreach $op (@lista) { $op = chr(92).$1 if $op =~ m"^(\+|\*|\.|\?)$" }
 push @operandos, $1 while $codigo =~ m"(\".*?\"|\'.*?\')"g;
 $codigo =~ s/\".*?\"|\'.*?\'/ /g;
 $codigo =~ s/\(|\)/ /g;
-foreach $op (@lista) { 
-	while ($codigo =~ m"($op)"g) {
-		push @operadores, $1;
-		$codigo =~ s/$op/ /;
-	}
-}
+foreach $op (@lista) { (push @operadores, $1) && ($codigo =~ s/$op/ /) while $codigo =~ m"($op)"g }
 $codigo =~ s/[[:punct:]]/ /g;
 foreach $op (split '\s+', $codigo) { push @operandos, $op if $op =~ m'\S+' }
 $n1 = scalar uniq @operadores;
