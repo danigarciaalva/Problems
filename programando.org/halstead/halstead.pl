@@ -23,22 +23,20 @@ $codigo =~ s/[\{\[\(\)\]\}]/ /g;
 $codigo =~ s/[\.:,;]/ /g;
 
 foreach $op (@lista) {
-	if ($op =~ m{^\W+$}) {
-		(push @operadores, $1) && ($codigo =~ s{\Q$op\E}{ }) while $codigo =~ m"(\Q$op\E)"g 
-	} else {
-		(push @operadores, $1) && ($codigo =~ s{\b\Q$op\E\b}{ }) while $codigo =~ m"\b(\Q$op\E)\b"g 
-	}
+	if ($op =~ m'^\W+$') { (push @operadores, $1) && ($codigo =~ s{\Q$op\E}{ }) while $codigo =~ m"(\Q$op\E)"g } 
+	else { (push @operadores, $1) && ($codigo =~ s{\b\Q$op\E\b}{ }) while $codigo =~ m"\b(\Q$op\E)\b"g }
 }
+
 foreach $op (split '\s+', $codigo) { push @operandos, $op if $op =~ m'\S+' }
 $n1 = scalar uniq @operadores;
 $n2 = scalar uniq @operandos;
 $N1 = scalar @operadores;
 $N2 = scalar @operandos;
 
-print "\nn1: $n1 (", join ',', uniq @operadores ,")\n";
-print "N1: $N1 (", join ',', @operadores ,")\n";
-print "n2: $n2 (", join ',', uniq @operandos ,")\n";
-print "N2: $N2 (", join ',', @operandos ,")\n\n";
+print "\n\nn1: $n1 (", join ',', uniq @operadores ,")\n";
+print "\nN1: $N1 (", join ',', @operadores ,")\n";
+print "\nn2: $n2 (", join ',', uniq @operandos ,")\n";
+print "\nN2: $N2 (", join ',', @operandos ,")\n\n";
 
 $V = ($N1 + $N2) * log2($n1 + $n2);
 $D = $n1/2 * $N2/$n2;
@@ -49,4 +47,3 @@ print "	Largo del Programa: N = ", $N1 + $N2, "
 	Nivel del Programa: L = ", 1/$D ,"
 	Esfuerzo de Implementacion: E = ", $V * $D ,"
 	Tiempo de Entendimiento: T = ", ($V * $D)/18, "\n\n";
-
