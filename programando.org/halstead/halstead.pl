@@ -6,18 +6,29 @@ sub log2 { return log(shift)/log(2) }
 ($lista, $fuente)	= (shift, shift);
 $codigo			= slurp $fuente;
 @lista			= split '\n', slurp $lista;
-@lista			= sort { $b <=> $a } @lista;
+@lista			= sort { length $b <=> length $a } @lista;
 
-$codigo =~ s/\\\'//g;
-$codigo =~ s/\\\"//g;
-$codigo =~ s/\n/ /g;
+$qq = chr(34);
+$q  = chr(39);
 
-foreach $op (@lista) { $op = chr(92).$1 if $op =~ m"^(\+|\*|\.|\?)$" }
-push @operandos, $1 while $codigo =~ m"(\".*?\"|\'.*?\')"g;
-$codigo =~ s/\".*?\"|\'.*?\'/ /g;
-$codigo =~ s/\(|\)/ /g;
-foreach $op (@lista) { (push @operadores, $1) && ($codigo =~ s/$op/ /) while $codigo =~ m"($op)"g }
-$codigo =~ s/[[:punct:]]/ /g;
+$codigo =~ s/\\\\/ \\\\ /g;
+$codigo =~ s/\\$q|\\$qq/ /g;
+$codigo =~ s/$q$q$q/ /g;
+$codigo =~ s/$qq$qq$qq/ /g;
+$codigo =~ s/\s+/ /g;
+
+push @operandos, $1 while $codigo =~ m"(\".*?\"|'.*?')"g;
+$codigo =~ s/'.*?'|".*?"/ /g;
+$codigo =~ s/[\{\[\(\)\]\}]/ /g;
+$codigo =~ s/[\.:,;]/ /g;
+
+foreach $op (@lista) {
+	if ($op =~ m{^\W+$}) {
+		(push @operadores, $1) && ($codigo =~ s{\Q$op\E}{ }) while $codigo =~ m"(\Q$op\E)"g 
+	} else {
+		(push @operadores, $1) && ($codigo =~ s{\b\Q$op\E\b}{ }) while $codigo =~ m"\b(\Q$op\E)\b"g 
+	}
+}
 foreach $op (split '\s+', $codigo) { push @operandos, $op if $op =~ m'\S+' }
 $n1 = scalar uniq @operadores;
 $n2 = scalar uniq @operandos;
@@ -38,5 +49,4 @@ print "	Largo del Programa: N = ", $N1 + $N2, "
 	Nivel del Programa: L = ", 1/$D ,"
 	Esfuerzo de Implementacion: E = ", $V * $D ,"
 	Tiempo de Entendimiento: T = ", ($V * $D)/18, "\n\n";
-
 
